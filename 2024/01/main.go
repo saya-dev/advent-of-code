@@ -29,19 +29,13 @@ func main() {
 	list2 := []int{}
 	
 	for scanner.Scan() {
-		first, second, _ := strings.Cut(scanner.Text(), "   ")
+		x, y, _ := strings.Cut(scanner.Text(), "   ")
 		
-		firstInt, err := strconv.Atoi(first)
-		if err != nil {
-			log.Fatal(err)
-		}
-		list1 = append(list1, firstInt)
+		ix, _ := strconv.Atoi(x)
+		list1 = append(list1, ix)
 
-		secondInt, err := strconv.Atoi(second)
-		if err != nil {
-			log.Fatal(err)
-		}
-		list2 = append(list2, secondInt)
+		iy, _ := strconv.Atoi(y)
+		list2 = append(list2, iy)
 	}
 
 	sort.Sort(sort.IntSlice(list1))
