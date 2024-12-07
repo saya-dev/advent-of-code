@@ -43,13 +43,13 @@ func main()  {
 	for scanner.Scan() {
 		r := scanner.Text()
 
-		if instructionSuffix := getSuffix(instruction); enabled {
+		if suffix := getSuffix(instruction); enabled {
 			if 
-			(instruction == "" && r == "d") || (instruction == "d" && r == "o") || (instructionSuffix == "o" && r == "n" ) || 
-			(instructionSuffix == "n" && r == "'" ) || (instructionSuffix == "'" && r == "t") ||(instructionSuffix == "t" && r == "(" ) {
+			(instruction == "" && r == "d") || (instruction == "d" && r == "o") || (suffix == "o" && r == "n" ) || 
+			(suffix == "n" && r == "'" ) || (suffix == "'" && r == "t") ||(suffix == "t" && r == "(" ) {
 				instruction += r
 				continue
-			} else if instructionSuffix == "(" && r == ")" {
+			} else if suffix == "(" && r == ")" {
 				enabled = false
 				instruction = ""
 				continue
@@ -57,10 +57,10 @@ func main()  {
 				instruction = ""
 			}
 		} else {
-			if (instruction == "" && r == "d") || (instruction == "d" && r == "o" ) || (instructionSuffix == "o" && r == "(") {
+			if (instruction == "" && r == "d") || (instruction == "d" && r == "o" ) || (suffix == "o" && r == "(") {
 				instruction += r
 				continue
-			} else if instructionSuffix == "(" && r == ")" {
+			} else if suffix == "(" && r == ")" {
 				enabled = true
 				instruction = ""
 				continue
@@ -69,8 +69,8 @@ func main()  {
 			}
 		}
 
-		if calcSuffix := getSuffix(calc); (calc == "" && r != "m") || (calc == "m" && r!= "u") || (calcSuffix == "u" && r != "l") || 
-		(calcSuffix == "l" && r != "(") || (calcSuffix == "(" && !isDigit(r)) || (isDigit(calcSuffix) && !isDigit(r) && r != "," && r!= ")") {
+		if suffix := getSuffix(calc); (calc == "" && r != "m") || (calc == "m" && r!= "u") || (suffix == "u" && r != "l") || 
+		(suffix == "l" && r != "(") || (suffix == "(" && !isDigit(r)) || (isDigit(suffix) && !isDigit(r) && r != "," && r!= ")") {
 			calc = ""
 			continue
 		}
