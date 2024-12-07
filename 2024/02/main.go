@@ -10,13 +10,13 @@ import (
 )
 
 func diff(a, b int) int {
-   if a < b {
-      return b - a
-   }
-   return a - b
+	if a < b {
+		return b - a
+	}
+	return a - b
 }
 
-func main()  {
+func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -41,19 +41,19 @@ func main()  {
 			if !found {
 				break
 			}
-			
+
 			line = rest
 		}
-		
+
 		increasing := levels[0] < levels[1]
 		errors := 0
 
-		for i := 0; i < len(levels) - 1; i++ {
+		for i := 0; i < len(levels)-1; i++ {
 			difference := diff(levels[i], levels[i+1])
 
-			if increasing != (levels[i] < levels[i+1]) || difference < 1 || difference > 3  {
+			if increasing != (levels[i] < levels[i+1]) || difference < 1 || difference > 3 {
 				if errors == 2 {
-					break	
+					break
 				}
 				errors += 1
 			}
@@ -68,5 +68,5 @@ func main()  {
 
 	fmt.Println("Safe Reports:", safeReports)
 	fmt.Println("Fixable Reports:", fixableReports)
-	fmt.Println("Safe & Fixable Reports:", safeReports + fixableReports)
+	fmt.Println("Safe & Fixable Reports:", safeReports+fixableReports)
 }

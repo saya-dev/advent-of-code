@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-func getSuffix (s string) string {
+func getSuffix(s string) string {
 	if s == "" {
 		return ""
 	}
 	return s[len(s)-1:]
 }
 
-func isDigit (s string) bool {
+func isDigit(s string) bool {
 	_, err := strconv.Atoi(s)
 	if err == nil {
 		return true
@@ -24,7 +24,7 @@ func isDigit (s string) bool {
 	return false
 }
 
-func main()  {
+func main() {
 	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +33,7 @@ func main()  {
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanRunes)
-	
+
 	enabled := true
 	instruction := ""
 	calc := ""
@@ -44,9 +44,8 @@ func main()  {
 		r := scanner.Text()
 
 		if suffix := getSuffix(instruction); enabled {
-			if 
-			(instruction == "" && r == "d") || (instruction == "d" && r == "o") || (suffix == "o" && r == "n" ) || 
-			(suffix == "n" && r == "'" ) || (suffix == "'" && r == "t") ||(suffix == "t" && r == "(" ) {
+			if (instruction == "" && r == "d") || (instruction == "d" && r == "o") || (suffix == "o" && r == "n") ||
+				(suffix == "n" && r == "'") || (suffix == "'" && r == "t") || (suffix == "t" && r == "(") {
 				instruction += r
 				continue
 			} else if suffix == "(" && r == ")" {
@@ -57,7 +56,7 @@ func main()  {
 				instruction = ""
 			}
 		} else {
-			if (instruction == "" && r == "d") || (instruction == "d" && r == "o" ) || (suffix == "o" && r == "(") {
+			if (instruction == "" && r == "d") || (instruction == "d" && r == "o") || (suffix == "o" && r == "(") {
 				instruction += r
 				continue
 			} else if suffix == "(" && r == ")" {
@@ -69,8 +68,8 @@ func main()  {
 			}
 		}
 
-		if suffix := getSuffix(calc); (calc == "" && r != "m") || (calc == "m" && r!= "u") || (suffix == "u" && r != "l") || 
-		(suffix == "l" && r != "(") || (suffix == "(" && !isDigit(r)) || (isDigit(suffix) && !isDigit(r) && r != "," && r!= ")") {
+		if suffix := getSuffix(calc); (calc == "" && r != "m") || (calc == "m" && r != "u") || (suffix == "u" && r != "l") ||
+			(suffix == "l" && r != "(") || (suffix == "(" && !isDigit(r)) || (isDigit(suffix) && !isDigit(r) && r != "," && r != ")") {
 			calc = ""
 			continue
 		}

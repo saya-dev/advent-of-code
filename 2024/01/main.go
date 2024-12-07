@@ -11,10 +11,10 @@ import (
 )
 
 func diff(a, b int) int {
-   if a < b {
-      return b - a
-   }
-   return a - b
+	if a < b {
+		return b - a
+	}
+	return a - b
 }
 
 func main() {
@@ -27,10 +27,10 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	list1 := []int{}
 	list2 := []int{}
-	
+
 	for scanner.Scan() {
 		x, y, _ := strings.Cut(scanner.Text(), "   ")
-		
+
 		ix, _ := strconv.Atoi(x)
 		list1 = append(list1, ix)
 
