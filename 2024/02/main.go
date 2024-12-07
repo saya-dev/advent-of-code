@@ -33,17 +33,15 @@ func main()  {
 		levels := []int{}
 
 		for {
-			level, rest, found := strings.Cut(line, " ")
+			x, rest, found := strings.Cut(line, " ")
 
-			levelInt, err := strconv.Atoi(level)
-			if err != nil {
-				log.Fatal(err)
-			}
-			levels = append(levels, levelInt)
+			ix, _ := strconv.Atoi(x)
+			levels = append(levels, ix)
 
 			if !found {
 				break
 			}
+			
 			line = rest
 		}
 		
