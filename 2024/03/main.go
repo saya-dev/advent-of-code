@@ -9,6 +9,13 @@ import (
 	"strings"
 )
 
+func getSuffix (s string) string {
+	if s == "" {
+		return ""
+	}
+	return s[len(s)-1:]
+}
+
 func isDigit (s string) bool {
 	_, err := strconv.Atoi(s)
 	if err == nil {
@@ -26,100 +33,63 @@ func main()  {
 
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanRunes)
-
+	
+	enabled := true
+	instruction := ""
+	calc := ""
 	sum := 0
 	enabledSum := 0
-	text := ""
-	text2 := ""
-	enabled := true
 
 	for scanner.Scan() {
 		r := scanner.Text()
 
-		if enabled {
-			if text2 == "" && r == "d" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"d") && r == "o" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"o") && r == "n" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"n") && r == "'" {
-				text2 += r;
-			} else if strings.HasSuffix(text2,"'") && r == "t" {
-				text2 += r;
-			} else if strings.HasSuffix(text2,"t") && r == "(" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"(") && r == ")" {
+		if instructionSuffix := getSuffix(instruction); enabled {
+			if 
+			(instruction == "" && r == "d") || (instruction == "d" && r == "o") || (instructionSuffix == "o" && r == "n" ) || 
+			(instructionSuffix == "n" && r == "'" ) || (instructionSuffix == "'" && r == "t") ||(instructionSuffix == "t" && r == "(" ) {
+				instruction += r
+				continue
+			} else if instructionSuffix == "(" && r == ")" {
 				enabled = false
-				text2 = ""
+				instruction = ""
+				continue
 			} else {
-				text2 = ""
+				instruction = ""
 			}
 		} else {
-			if text2 == "" && r == "d" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"d") && r == "o" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"o") && r == "(" {
-				text2 += r
-			} else if strings.HasSuffix(text2,"(") && r == ")" {
+			if (instruction == "" && r == "d") || (instruction == "d" && r == "o" ) || (instructionSuffix == "o" && r == "(") {
+				instruction += r
+				continue
+			} else if instructionSuffix == "(" && r == ")" {
 				enabled = true
-				text2 = ""
+				instruction = ""
+				continue
 			} else {
-				text2 = ""
+				instruction = ""
 			}
 		}
 
-		if text == "" && r != "m" {
+		if calcSuffix := getSuffix(calc); (calc == "" && r != "m") || (calc == "m" && r!= "u") || (calcSuffix == "u" && r != "l") || 
+		(calcSuffix == "l" && r != "(") || (calcSuffix == "(" && !isDigit(r)) || (isDigit(calcSuffix) && !isDigit(r) && r != "," && r!= ")") {
+			calc = ""
 			continue
 		}
 
-		if text == "m" && r!= "u" {
-			text = ""
-			continue
-		}
+		calc += r
 
-		if strings.HasSuffix(text, "u") && r != "l" {
-			text = ""
-			continue
-		}
-
-		if strings.HasSuffix(text, "l") && r != "(" {
-			text = ""
-			continue
-		}
-
-		if strings.HasSuffix(text, "(") && !isDigit(r){
-			text = ""
-			continue
-		}
-
-		if text != "" && isDigit(text[len(text)-1:]) && !isDigit(r) && r != "," && r!= ")" {
-			text = ""
-			continue
-		}
-
-		text += r
-
-		if strings.HasSuffix(text, ")") {
-			text = strings.TrimPrefix(text, "mul(")
-			text = strings.TrimSuffix(text, ")")
-
-			x, y, _ := strings.Cut(text, ",")
-
+		if r == ")" {
+			x, y, _ := strings.Cut(strings.Trim(calc, "mul()"), ",")
 			ix, _ := strconv.Atoi(x)
 			iy, _ := strconv.Atoi(y)
 
 			sum += ix * iy
+			calc = ""
 
 			if enabled {
 				enabledSum += ix * iy
 			}
-
-			text = ""
 		}
 	}
-
 
 	fmt.Println("Result:", sum)
 	fmt.Println("Enabled Result:", enabledSum)
